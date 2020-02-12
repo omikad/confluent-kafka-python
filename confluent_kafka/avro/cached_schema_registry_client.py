@@ -113,6 +113,8 @@ class CachedSchemaRegistryClient(object):
 
         self.auto_register_schemas = conf.pop("auto.register.schemas", True)
 
+        self.additional_headers = conf.pop("additional.headers", None)
+
         if len(conf) > 0:
             raise ValueError("Unrecognized configuration properties: {}".format(conf.keys()))
 
@@ -162,6 +164,8 @@ class CachedSchemaRegistryClient(object):
             _headers["Content-Length"] = str(len(body))
             _headers["Content-Type"] = "application/vnd.schemaregistry.v1+json"
         _headers.update(headers)
+        if self.additional_headers:
+            _headers.update(self.additional_headers)
 
         response = self._session.request(method, url, headers=_headers, json=body)
         # Returned by Jetty not SR so the payload is not json encoded
