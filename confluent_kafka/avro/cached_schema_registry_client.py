@@ -173,7 +173,7 @@ class CachedSchemaRegistryClient(object):
         try:
             return response.json(), response.status_code
         except ValueError:
-            log.debug("Unexpected response from schema registry: [{}] {}".foramt(response.status_code, response.content))
+            log.debug("Unexpected response from schema registry: [{}] {}".format(response.status_code, response.content))
             return response.content, response.status_code
 
     @staticmethod
