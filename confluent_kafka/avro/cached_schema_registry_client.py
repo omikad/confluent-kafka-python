@@ -170,10 +170,10 @@ class CachedSchemaRegistryClient(object):
         log.debug("Sending request to schema registry {} {} {} {}".format(method, url , _headers, body))
         response = self._session.request(method, url, headers=_headers, json=body)
         # Returned by Jetty not SR so the payload is not json encoded
+        log.debug("Got response from schema registry: [{}] {}".format(response.status_code, response.content))
         try:
             return response.json(), response.status_code
         except ValueError:
-            log.debug("Unexpected response from schema registry: [{}] {}".format(response.status_code, response.content))
             return response.content, response.status_code
 
     @staticmethod
