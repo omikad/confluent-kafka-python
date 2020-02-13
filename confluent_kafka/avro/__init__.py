@@ -3,6 +3,7 @@
 
 """
 
+import logging
 from confluent_kafka import Producer, Consumer
 from confluent_kafka.avro.error import ClientError
 from confluent_kafka.avro.load import load, loads  # noqa
@@ -11,6 +12,9 @@ from confluent_kafka.avro.serializer import (SerializerError,  # noqa
                                              KeySerializerError,
                                              ValueSerializerError)
 from confluent_kafka.avro.serializer.message_serializer import MessageSerializer
+
+
+log = logging.getLogger(__name__)
 
 
 class AvroProducer(Producer):
@@ -88,6 +92,7 @@ class AvroProducer(Producer):
             else:
                 raise KeySerializerError("Avro schema required for key")
 
+        log.debug("Message for topic {} has been serialized. Sending".format(topic))
         super(AvroProducer, self).produce(topic, value, key, **kwargs)
 
 
